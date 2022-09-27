@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import {
   TrashIcon,
@@ -10,6 +8,7 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { CheckboxGroup } from '@chakra-ui/checkbox';
 import { Stack } from '@chakra-ui/react';
+import BeatLoader from 'react-spinners/BeatLoader';
 import { ProjectContext } from '../../contexts/Project';
 import { useAxios } from '../../hooks/useAxios';
 import { ITask } from '../../types/typings';
@@ -138,6 +137,12 @@ function Feed() {
               onClick={handleDeleteProject}
             />
           </div>
+
+          {getTasksAPI.loading && (
+            <div className="w-full h-full flex items-center justify-center">
+              <BeatLoader color="#36d7b7" />
+            </div>
+          )}
 
           <div className="flex space-x-2 mt-5">
             <h2 className="text-xl font-semibold">Tasks</h2>

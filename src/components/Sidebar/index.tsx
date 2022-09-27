@@ -1,7 +1,7 @@
-/* eslint-disable import/extensions */
 import React, { useContext, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Button, useDisclosure } from '@chakra-ui/react';
+import BeatLoader from 'react-spinners/BeatLoader';
 import SidebarRow from '../SidebarRow';
 import Logo from '../Icons/Logo';
 import { ProjectContext } from '../../contexts/Project';
@@ -44,6 +44,12 @@ function Sidebar() {
         projects?.map(project => (
           <SidebarRow key={project.id} project={project} />
         ))}
+
+      {projectsApi.loading && (
+        <div className="w-full flex items-center justify-center">
+          <BeatLoader color="#36d7b7" />
+        </div>
+      )}
 
       <Button onClick={onOpen} colorScheme="teal" className="mt-3">
         New Project
