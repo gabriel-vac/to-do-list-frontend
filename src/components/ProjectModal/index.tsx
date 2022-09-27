@@ -11,9 +11,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { baseURL } from '../../consts';
+import { baseURL, headers } from '../../consts';
 import { ProjectContext } from '../../contexts/Project';
 
 interface IProjectModalProps {
@@ -29,10 +29,7 @@ export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
   const saveButtonHandler = async () => {
     const requestOptions = {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({ name: projectName }),
     };
 
@@ -53,10 +50,6 @@ export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
-
-  useEffect(() => {
-    console.log({ projectName });
-  }, [projectName]);
 
   return (
     <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>

@@ -15,7 +15,7 @@ import { useAxios } from '../../hooks/useAxios';
 import { ITask } from '../../types/typings';
 import CustomCheckBox from '../CustomCheckBox';
 import { useAlert } from '../../hooks/useAlert';
-import { baseURL } from '../../consts';
+import { baseURL, headers } from '../../consts';
 
 function Feed() {
   const { projectSelected, listProjects } = useContext(ProjectContext);
@@ -58,6 +58,24 @@ function Feed() {
     });
   };
 
+  const handleUpdateProject = async () => {
+    const requestOptions = {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ name: projectName }),
+    };
+
+    const response = await fetch(
+      `${baseURL}projects/${projectSelected?.id}`,
+      requestOptions,
+    );
+    if (response.status === 200 || response.status === 201) {
+      toast.success('Projeto atualizado com sucesso!!');
+      return;
+    }
+    toast.error('Erro ao atualizar projeto...');
+  };
+
   useEffect(() => {
     if (projectSelected.name) {
       setProjectName(projectSelected.name);
@@ -66,6 +84,8 @@ function Feed() {
 
   useEffect(() => {
     if (projectSelected.id) {
+      setTasks([]);
+      setUserTasks([]);
       getTasksAPI.request();
     }
   }, [projectSelected]);
@@ -150,7 +170,7 @@ function Feed() {
             </CheckboxGroup>
           </div>
 
-          {selectedUser && (
+          {selectedUser && userTasks.length > 0 && (
             <>
               <h2 className="text-xl font-semibold mt-5">
                 {selectedUser}&apos;s tasks

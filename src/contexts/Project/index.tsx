@@ -51,9 +51,9 @@ function ProjectProvider({ children }: IProjectContextProps) {
     if (projectsApi.data && projectsApi.data?.length > 0) {
       setProjects(projectsApi.data);
       setProjectSelected(projectsApi.data[0]);
-    } else {
-      setProjectSelected({ id: '', name: '' });
+      return;
     }
+    setProjectSelected({ id: '', name: '' });
   }, [projectsApi.data]);
 
   return (

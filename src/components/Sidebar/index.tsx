@@ -1,12 +1,10 @@
 /* eslint-disable import/extensions */
 import React, { useContext, useEffect } from 'react';
-import { HomeIcon } from '@heroicons/react/outline';
 import { Toaster } from 'react-hot-toast';
 import { Button, useDisclosure } from '@chakra-ui/react';
 import SidebarRow from '../SidebarRow';
 import Logo from '../Icons/Logo';
 import { ProjectContext } from '../../contexts/Project';
-import { IProject } from '../../types/typings';
 import ProjectModal from '../ProjectModal';
 
 function Sidebar() {
@@ -28,8 +26,8 @@ function Sidebar() {
       </div>
 
       {projectSelected.id &&
-        projects?.map((project: IProject) => (
-          <SidebarRow key={project.id} Icon={HomeIcon} project={project} />
+        projects?.map(project => (
+          <SidebarRow key={project.id} project={project} />
         ))}
 
       <Button onClick={onOpen} colorScheme="teal" className="mt-3">
