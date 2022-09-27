@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { CheckboxGroup } from '@chakra-ui/checkbox';
 import { Stack } from '@chakra-ui/react';
 import BeatLoader from 'react-spinners/BeatLoader';
+import { format } from 'date-fns';
 import { ProjectContext } from '../../contexts/Project';
 import { useAxios } from '../../hooks/useAxios';
 import { ITask } from '../../types/typings';
@@ -152,9 +153,12 @@ function Feed() {
           </div>
           <div className="mt-2">
             <CheckboxGroup colorScheme="teal">
-              <Stack pl={6} mt={1} spacing={1}>
+              <Stack mt={1} spacing={2}>
                 {tasks?.map(task => (
-                  <div key={task.id} className="flex space-x-3">
+                  <div
+                    key={task.id}
+                    className="flex bg-white items-center max-w-fit py-1 px-3 rounded-lg space-x-3"
+                  >
                     <CustomCheckBox
                       id={task.id}
                       name={task.name}
@@ -169,7 +173,12 @@ function Feed() {
                     >
                       @{task.responsible}
                     </button>
-                    <div className="text-gray-700 text-md">{task.deadline}</div>
+                    <div className="text-gray-700 text-md">
+                      {format(new Date(task.deadline), 'dd/MM/yyyy')}
+                    </div>
+                    {new Date(task.deadline) > new Date() && (
+                      <ExclamationCircleIcon className="text-red-400 h-6 w-6" />
+                    )}
                   </div>
                 ))}
               </Stack>
