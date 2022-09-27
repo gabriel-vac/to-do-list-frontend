@@ -176,7 +176,7 @@ function Feed() {
                     <div className="text-gray-700 text-md">
                       {format(new Date(task.deadline), 'dd/MM/yyyy')}
                     </div>
-                    {new Date(task.deadline) > new Date() && (
+                    {new Date(task.deadline) < new Date() && (
                       <ExclamationCircleIcon className="text-red-400 h-6 w-6" />
                     )}
                   </div>
