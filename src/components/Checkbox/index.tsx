@@ -7,10 +7,8 @@ function CustomCheckBox({ id, name, deadline, responsible, done }: ITask) {
   const [checked, setChecked] = useState<boolean>(done);
 
   const handleCheckBox = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
     const requestOptions = {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name,
         deadline,
