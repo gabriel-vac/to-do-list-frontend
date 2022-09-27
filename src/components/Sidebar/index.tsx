@@ -2,15 +2,18 @@
 import React, { useContext, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/outline';
 import { Toaster } from 'react-hot-toast';
+import { Button, useDisclosure } from '@chakra-ui/react';
 import SidebarRow from '../SidebarRow';
 import Logo from '../Icons/Logo';
-import CustomButton from '../CustomButton';
 import { ProjectContext } from '../../contexts/Project';
 import { IProject } from '../../types/typings';
+import ProjectModal from '../ProjectModal';
 
 function Sidebar() {
   const { listProjects, projects, projectSelected } =
     useContext(ProjectContext);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     listProjects();
@@ -29,7 +32,11 @@ function Sidebar() {
           <SidebarRow key={project.id} Icon={HomeIcon} project={project} />
         ))}
 
-      <CustomButton title="New Project" />
+      <Button onClick={onOpen} colorScheme="teal" className="mt-3">
+        New Project
+      </Button>
+
+      <ProjectModal isOpen={isOpen} onClose={onClose} />
     </div>
   );
 }

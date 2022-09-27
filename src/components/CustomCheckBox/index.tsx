@@ -9,6 +9,10 @@ function CustomCheckBox({ id, name, deadline, responsible, done }: ITask) {
   const handleCheckBox = async (e: ChangeEvent<HTMLInputElement>) => {
     const requestOptions = {
       method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name,
         deadline,
