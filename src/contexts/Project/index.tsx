@@ -1,15 +1,17 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { createContext, useState } from 'react';
+import { IProject } from '../../types/typings';
+
+interface IProjectContextProps {
+  children: React.ReactNode;
+}
 
 export const ProjectContext = createContext({});
 
-interface IProject {
-  name: string;
-}
-
-function ProjectProvider({ children }: any) {
+function ProjectProvider({ children }: IProjectContextProps) {
   const [projectSelected, setProjectSelected] = useState<IProject>({
-    name: 'teste',
+    id: '',
+    name: '',
   });
 
   const selectProject = (project: IProject) => {
