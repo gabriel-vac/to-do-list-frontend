@@ -18,7 +18,7 @@ import { useAlert } from '../../hooks/useAlert';
 import { baseURL, headers } from '../../consts';
 
 function Feed() {
-  const { projectSelected, listProjects } = useContext(ProjectContext);
+  const { projectSelected, removeProject } = useContext(ProjectContext);
   const alert = useAlert();
 
   const [projectName, setProjectName] = useState<string>('');
@@ -38,6 +38,7 @@ function Feed() {
 
   const deleteProject = async () => {
     const requestOptions = {
+      headers,
       method: 'DELETE',
     };
 
@@ -46,7 +47,7 @@ function Feed() {
       requestOptions,
     );
     if (response.status === 200) {
-      listProjects();
+      removeProject(projectSelected);
       toast.success('Projeto deletado!!');
     }
   };

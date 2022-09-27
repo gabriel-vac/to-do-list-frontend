@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { createContext, useState, useEffect } from 'react';
-import { useAxios } from '../../hooks/useAxios';
+import React, { createContext, useState } from 'react';
 import { IProject } from '../../types/typings';
 
 interface IProjectContextProps {
@@ -9,56 +8,59 @@ interface IProjectContextProps {
 
 interface IProjectContext {
   projects: IProject[];
-  listProjects: () => void;
+  setProjects: (projects: IProject[]) => void;
   projectSelected: IProject;
   selectProject: (project: IProject) => void;
+  addProject: (project: IProject) => void;
+  removeProject: (project: IProject) => void;
 }
 
 const initialValue = {
   projects: [],
-  listProjects: () => {},
+  setProjects: () => {},
   projectSelected: {
     id: '',
     name: '',
   },
   selectProject: () => {},
+  addProject: () => {},
+  removeProject: () => {},
 };
 
 export const ProjectContext = createContext<IProjectContext>(initialValue);
 
 function ProjectProvider({ children }: IProjectContextProps) {
-  const projectsApi = useAxios<IProject[]>(
-    { method: 'get' },
-    'projects',
-    () => {},
-    false,
+  const [projects, setProjects] = useState<IProject[]>(initialValue.projects);
+  const [projectSelected, setProjectSelected] = useState<IProject>(
+    initialValue.projectSelected,
   );
-  const [projects, setProjects] = useState<IProject[]>([]);
-  const [projectSelected, setProjectSelected] = useState<IProject>({
-    id: '',
-    name: '',
-  });
 
   const selectProject = (project: IProject) => {
     setProjectSelected(project);
   };
 
-  const listProjects = () => {
-    projectsApi.request();
+  const addProject = (project: IProject) => {
+    projects.push(project);
   };
 
-  useEffect(() => {
-    if (projectsApi.data && projectsApi.data?.length > 0) {
-      setProjects(projectsApi.data);
-      setProjectSelected(projectsApi.data[0]);
-      return;
-    }
-    setProjectSelected({ id: '', name: '' });
-  }, [projectsApi.data]);
+  const removeProject = (project: IProject) => {
+    const newArray = projects.filter(item => {
+      return item !== project;
+    });
+
+    setProjects(newArray);
+  };
 
   return (
     <ProjectContext.Provider
-      value={{ projects, listProjects, projectSelected, selectProject }}
+      value={{
+        projects,
+        setProjects,
+        projectSelected,
+        selectProject,
+        addProject,
+        removeProject,
+      }}
     >
       {children}
     </ProjectContext.Provider>

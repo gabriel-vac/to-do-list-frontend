@@ -15,6 +15,7 @@ import React, { ChangeEvent, useContext, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { baseURL, headers } from '../../consts';
 import { ProjectContext } from '../../contexts/Project';
+import { IProject } from '../../types/typings';
 
 interface IProjectModalProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ interface IProjectModalProps {
 export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
   const initialRef = React.useRef(null);
   const [projectName, setProjectName] = useState<string>('');
-  const { listProjects } = useContext(ProjectContext);
+  const { addProject } = useContext(ProjectContext);
 
   const saveButtonHandler = async () => {
     const requestOptions = {
@@ -36,8 +37,9 @@ export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
     try {
       const response = await fetch(`${baseURL}projects`, requestOptions);
       if (response.status === 200 || response.status === 201) {
+        const content: IProject = await response.json();
         toast.success('Projeto cadastrado com sucesso!!');
-        listProjects();
+        addProject(content);
         onClose();
         return;
       }

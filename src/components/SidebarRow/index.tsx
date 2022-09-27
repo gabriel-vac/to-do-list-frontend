@@ -1,4 +1,4 @@
-import React, { SVGProps, useContext } from 'react';
+import React, { useContext } from 'react';
 import { ProjectContext } from '../../contexts/Project';
 import { IProject } from '../../types/typings';
 

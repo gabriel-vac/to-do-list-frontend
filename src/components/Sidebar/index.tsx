@@ -1,21 +1,36 @@
 /* eslint-disable import/extensions */
 import React, { useContext, useEffect } from 'react';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { Button, useDisclosure } from '@chakra-ui/react';
 import SidebarRow from '../SidebarRow';
 import Logo from '../Icons/Logo';
 import { ProjectContext } from '../../contexts/Project';
 import ProjectModal from '../ProjectModal';
+import { useAxios } from '../../hooks/useAxios';
+import { IProject } from '../../types/typings';
 
 function Sidebar() {
-  const { listProjects, projects, projectSelected } =
+  const { projects, projectSelected, setProjects, selectProject } =
     useContext(ProjectContext);
+  const projectsApi = useAxios<IProject[]>(
+    { method: 'get' },
+    'projects',
+    () => {
+      toast.error('Erro ao listar projetos...');
+    },
+    true,
+  );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    listProjects();
-  }, []);
+    if (projectsApi.data && projectsApi.data?.length > 0) {
+      setProjects(projectsApi.data);
+      selectProject(projectsApi.data[0]);
+      return;
+    }
+    selectProject({ id: '', name: '' });
+  }, [projectsApi.data]);
 
   return (
     <div className="col-span-9 md:col-span-2 pb-6 flex flex-col items-center px-4 md:items-start">
