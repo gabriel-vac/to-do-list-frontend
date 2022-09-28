@@ -259,7 +259,7 @@ function Feed() {
       ) : (
         <div className="flex items-center space-x-1 mt-5 p-2 text-xl font-bold bg-white rounded-lg">
           <ExclamationCircleIcon className="mr-2 h-8 w-8 text-primary" />
-          <p>Nenhum projeto encontrado :(</p>
+          <p>No project found :(</p>
         </div>
       )}
     </div>
