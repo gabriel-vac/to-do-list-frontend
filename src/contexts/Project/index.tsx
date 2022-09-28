@@ -12,6 +12,7 @@ interface IProjectContext {
   projectSelected: IProject;
   selectProject: (project: IProject) => void;
   addProject: (project: IProject) => void;
+  updateProject: (project: IProject) => void;
   removeProject: (project: IProject) => void;
 }
 
@@ -24,6 +25,7 @@ const initialValue = {
   },
   selectProject: () => {},
   addProject: () => {},
+  updateProject: () => {},
   removeProject: () => {},
 };
 
@@ -43,6 +45,18 @@ function ProjectProvider({ children }: IProjectContextProps) {
     projects.push(project);
   };
 
+  const updateProject = (project: IProject) => {
+    const newArray = projects.map(item => {
+      if (item.id === project.id) {
+        // setProjectSelected({ ...projectSelected, name: project.name });
+        return { ...item, name: project.name };
+      }
+      return item;
+    });
+
+    setProjects(newArray);
+  };
+
   const removeProject = (project: IProject) => {
     const newArray = projects.filter(item => {
       return item !== project;
@@ -59,6 +73,7 @@ function ProjectProvider({ children }: IProjectContextProps) {
         projectSelected,
         selectProject,
         addProject,
+        updateProject,
         removeProject,
       }}
     >

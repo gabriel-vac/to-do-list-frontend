@@ -4,6 +4,7 @@ import {
   SaveIcon,
   ExclamationCircleIcon,
   RefreshIcon,
+  XIcon,
 } from '@heroicons/react/outline';
 import toast, { Toaster } from 'react-hot-toast';
 import { CheckboxGroup } from '@chakra-ui/checkbox';
@@ -12,13 +13,14 @@ import BeatLoader from 'react-spinners/BeatLoader';
 import { format } from 'date-fns';
 import { ProjectContext } from '../../contexts/Project';
 import { useAxios } from '../../hooks/useAxios';
-import { ITask } from '../../types/typings';
+import { IProject, ITask } from '../../types/typings';
 import CustomCheckBox from '../CustomCheckBox';
 import { useAlert } from '../../hooks/useAlert';
 import { baseURL, headers } from '../../consts';
 
 function Feed() {
-  const { projectSelected, removeProject } = useContext(ProjectContext);
+  const { projectSelected, removeProject, updateProject } =
+    useContext(ProjectContext);
   const alert = useAlert();
 
   const [projectName, setProjectName] = useState<string>('');
@@ -72,6 +74,8 @@ function Feed() {
     );
     if (response.status === 200 || response.status === 201) {
       toast.success('Projeto atualizado com sucesso!!');
+      const content: IProject = await response.json();
+      updateProject(content);
       return;
     }
     toast.error('Erro ao atualizar projeto...');
@@ -187,8 +191,12 @@ function Feed() {
 
           {selectedUser && userTasks.length > 0 && (
             <>
-              <h2 className="text-xl font-semibold mt-5">
-                {selectedUser}&apos;s tasks
+              <h2 className="text-xl font-semibold mt-5 flex items-center space-x-5">
+                {selectedUser}&apos;s tasks{' '}
+                <XIcon
+                  className="h-5 w-5 hover:cursor-pointer hover:scale-110 transition-transform duration-200 text-gray-400"
+                  onClick={() => setUserTasks([])}
+                />
               </h2>
               <div className="mt-2">
                 <CheckboxGroup colorScheme="teal">
@@ -210,7 +218,7 @@ function Feed() {
                           @{task.responsible}
                         </button>
                         <div className="text-gray-700 text-md">
-                          {task.deadline}
+                          {format(new Date(task.deadline), 'dd/MM/yyyy')}
                         </div>
                       </div>
                     ))}
