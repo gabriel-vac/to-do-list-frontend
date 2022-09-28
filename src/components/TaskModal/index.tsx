@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import React, { ChangeEvent, useContext, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { baseURL, headers } from '../../consts';
@@ -42,7 +43,7 @@ export default function TaskModal({
       headers,
       body: JSON.stringify({
         name: taskName,
-        deadline,
+        deadline: format(deadline, 'yyyy-MM-dd'),
         responsible,
         done: false,
         projectId: projectSelected.id,
@@ -87,7 +88,7 @@ export default function TaskModal({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
-            <FormLabel>Title</FormLabel>
+            <FormLabel>Title *</FormLabel>
             <Input
               value={taskName}
               onChange={e => inputChangeHandler(e)}
@@ -95,7 +96,7 @@ export default function TaskModal({
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Responsible</FormLabel>
+            <FormLabel>Responsible *</FormLabel>
             <Input
               value={responsible}
               onChange={e => responsibleChangeHandler(e)}
@@ -108,12 +109,18 @@ export default function TaskModal({
               type="date"
               placeholder="Deadline"
               onChange={e => deadlineChangeHandler(e)}
+              value={deadline.toISOString().split('T')[0]}
             />
           </FormControl>
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="teal" mr={3} onClick={() => saveButtonHandler()}>
+          <Button
+            colorScheme="teal"
+            mr={3}
+            onClick={() => saveButtonHandler()}
+            disabled={!taskName || !responsible}
+          >
             Save
           </Button>
           <Button onClick={onClose}>Cancel</Button>

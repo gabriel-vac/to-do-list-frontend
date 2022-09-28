@@ -64,6 +64,12 @@ function Feed() {
     });
   };
 
+  const handleFilter = () => {
+    setSelectedUser('');
+    setTasks(tasks.concat(userTasks));
+    setUserTasks([]);
+  };
+
   const handleUpdateProject = async () => {
     const requestOptions = {
       method: 'PUT',
@@ -100,12 +106,10 @@ function Feed() {
 
   useEffect(() => {
     if (selectedUser) {
-      const userArrays = getTasksAPI?.data?.filter(
+      const userArrays = tasks.filter(
         item => item.responsible === selectedUser,
       );
-      const rest = getTasksAPI?.data?.filter(
-        item => item.responsible !== selectedUser,
-      );
+      const rest = tasks.filter(item => item.responsible !== selectedUser);
       setUserTasks(userArrays as ITask[]);
       setTasks(rest as ITask[]);
     }
@@ -175,7 +179,11 @@ function Feed() {
                     />
                     <button
                       type="button"
-                      onClick={() => setSelectedUser(task.responsible)}
+                      onClick={() => {
+                        if (!userTasks.length) {
+                          setSelectedUser(task.responsible);
+                        }
+                      }}
                       className="text-blue-400 text-lg"
                     >
                       @{task.responsible}
@@ -198,14 +206,17 @@ function Feed() {
                 {selectedUser}&apos;s tasks{' '}
                 <XIcon
                   className="h-5 w-5 hover:cursor-pointer hover:scale-110 transition-transform duration-200 text-gray-400"
-                  onClick={() => setUserTasks([])}
+                  onClick={handleFilter}
                 />
               </h2>
               <div className="mt-2">
                 <CheckboxGroup colorScheme="teal">
-                  <Stack pl={6} mt={1} spacing={1}>
+                  <Stack mt={1} spacing={1}>
                     {userTasks.map(task => (
-                      <div key={task.id} className="flex space-x-3">
+                      <div
+                        key={task.id}
+                        className="flex bg-white items-center max-w-fit py-1 px-3 rounded-lg space-x-3"
+                      >
                         <CustomCheckBox
                           id={task.id}
                           name={task.name}
