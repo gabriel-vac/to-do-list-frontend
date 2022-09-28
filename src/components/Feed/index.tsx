@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/outline';
 import toast, { Toaster } from 'react-hot-toast';
 import { CheckboxGroup } from '@chakra-ui/checkbox';
-import { Button, Stack, useDisclosure } from '@chakra-ui/react';
+import { Button, Stack, Tooltip, useDisclosure } from '@chakra-ui/react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { format } from 'date-fns';
 import { ProjectContext } from '../../contexts/Project';
@@ -90,6 +90,32 @@ function Feed() {
     toast.error('Error when updating project...');
   };
 
+  const handleDeleteTask = async (task: ITask) => {
+    const requestOptions = {
+      method: 'DELETE',
+      headers,
+    };
+
+    const response = await fetch(`${baseURL}tasks/${task.id}`, requestOptions);
+    if (response.status === 200) {
+      toast.success('Task deleted!!');
+
+      const newArray = tasks.filter(item => {
+        return item !== task;
+      });
+
+      // do the same thing if the task is in the users list
+      const newArrayUsers = userTasks.filter(item => {
+        return item !== task;
+      });
+
+      setTasks(newArray);
+      setUserTasks(newArrayUsers);
+      return;
+    }
+    toast.error('Error when deleting project...');
+  };
+
   useEffect(() => {
     if (projectSelected.name) {
       setProjectName(projectSelected.name);
@@ -158,7 +184,15 @@ function Feed() {
 
           <div className="flex space-x-2 mt-5">
             <h2 className="text-xl font-semibold">Tasks</h2>
-            <button type="button" onClick={() => getTasksAPI.request()}>
+            <button
+              type="button"
+              onClick={() => {
+                setUserTasks([]);
+                setTasks([]);
+                setSelectedUser('');
+                getTasksAPI.request();
+              }}
+            >
               <RefreshIcon className="mr-2 h-7 w-7 cursor-pointer text-primary transition-all duration-500 ease-out hover:rotate-180 active:scale-125" />
             </button>
           </div>
@@ -192,8 +226,14 @@ function Feed() {
                       {format(new Date(task.deadline), 'dd/MM/yyyy')}
                     </div>
                     {new Date(task.deadline) < new Date() && (
-                      <ExclamationCircleIcon className="text-red-400 h-6 w-6" />
+                      <Tooltip label="Late task" fontSize="md">
+                        <ExclamationCircleIcon className="text-red-400 h-6 w-6" />
+                      </Tooltip>
                     )}
+                    <TrashIcon
+                      className="h-6 w-6 cursor-pointer text-gray-300  transition-all duration-500 ease-out hover:scale-125"
+                      onClick={() => handleDeleteTask(task)}
+                    />
                   </div>
                 ))}
               </Stack>
@@ -234,6 +274,15 @@ function Feed() {
                         <div className="text-gray-700 text-md">
                           {format(new Date(task.deadline), 'dd/MM/yyyy')}
                         </div>
+                        {new Date(task.deadline) < new Date() && (
+                          <Tooltip label="Late task" fontSize="md">
+                            <ExclamationCircleIcon className="text-red-400 h-6 w-6" />
+                          </Tooltip>
+                        )}
+                        <TrashIcon
+                          className="h-6 w-6 cursor-pointer text-gray-300  transition-all duration-500 ease-out hover:scale-125"
+                          onClick={() => handleDeleteTask(task)}
+                        />
                       </div>
                     ))}
                   </Stack>
