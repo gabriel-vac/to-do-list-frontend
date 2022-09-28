@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import ProjectProvider from './contexts/Project';
+import { ProjectProvider } from './contexts/Project';
 import Home from './pages/Home';
 
 const theme = extendTheme({

@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { ProjectContext } from '../../contexts/Project';
+import React from 'react';
+import useProject from '../../contexts/Project';
 import { IProject } from '../../types/typings';
 
 interface ISidebarRowProps {
@@ -7,7 +7,7 @@ interface ISidebarRowProps {
 }
 
 function SidebarRow({ project }: ISidebarRowProps) {
-  const { selectProject }: any = useContext(ProjectContext);
+  const { selectProject } = useProject();
 
   const handleButtonClick = () => {
     selectProject(project);

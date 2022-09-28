@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
   TrashIcon,
   SaveIcon,
@@ -11,7 +11,7 @@ import { CheckboxGroup } from '@chakra-ui/checkbox';
 import { Button, Stack, Tooltip, useDisclosure } from '@chakra-ui/react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { format } from 'date-fns';
-import { ProjectContext } from '../../contexts/Project';
+import useProject from '../../contexts/Project';
 import { useAxios } from '../../hooks/useAxios';
 import { IProject, ITask } from '../../types/typings';
 import CustomCheckBox from '../CustomCheckBox';
@@ -20,8 +20,7 @@ import { baseURL, headers } from '../../consts';
 import TaskModal from '../TaskModal';
 
 function Feed() {
-  const { projectSelected, removeProject, updateProject } =
-    useContext(ProjectContext);
+  const { projectSelected, removeProject, updateProject } = useProject();
   const alert = useAlert();
 
   const [projectName, setProjectName] = useState<string>('');

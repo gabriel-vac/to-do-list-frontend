@@ -11,10 +11,10 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import React, { ChangeEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { baseURL, headers } from '../../consts';
-import { ProjectContext } from '../../contexts/Project';
+import useProject from '../../contexts/Project';
 import { IProject } from '../../types/typings';
 
 interface IProjectModalProps {
@@ -25,7 +25,7 @@ interface IProjectModalProps {
 export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
   const initialRef = React.useRef(null);
   const [projectName, setProjectName] = useState<string>('');
-  const { addProject } = useContext(ProjectContext);
+  const { addProject } = useProject();
 
   const saveButtonHandler = async () => {
     const requestOptions = {

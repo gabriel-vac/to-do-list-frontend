@@ -1,17 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Button, useDisclosure } from '@chakra-ui/react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import SidebarRow from '../SidebarRow';
 import Logo from '../Icons/Logo';
-import { ProjectContext } from '../../contexts/Project';
+import useProject from '../../contexts/Project';
 import ProjectModal from '../ProjectModal';
 import { useAxios } from '../../hooks/useAxios';
 import { IProject } from '../../types/typings';
 
 function Sidebar() {
   const { projects, projectSelected, setProjects, selectProject } =
-    useContext(ProjectContext);
+    useProject();
   const projectsApi = useAxios<IProject[]>(
     { method: 'get' },
     'projects',

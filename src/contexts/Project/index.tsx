@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { IProject } from '../../types/typings';
 
 interface IProjectContextProps {
@@ -31,7 +31,7 @@ const initialValue = {
 
 export const ProjectContext = createContext<IProjectContext>(initialValue);
 
-function ProjectProvider({ children }: IProjectContextProps) {
+export function ProjectProvider({ children }: IProjectContextProps) {
   const [projects, setProjects] = useState<IProject[]>(initialValue.projects);
   const [projectSelected, setProjectSelected] = useState<IProject>(
     initialValue.projectSelected,
@@ -92,4 +92,6 @@ function ProjectProvider({ children }: IProjectContextProps) {
   );
 }
 
-export default ProjectProvider;
+export default function useProject() {
+  return useContext(ProjectContext);
+}

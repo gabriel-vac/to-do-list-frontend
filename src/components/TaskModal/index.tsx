@@ -12,10 +12,10 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import React, { ChangeEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { baseURL, headers } from '../../consts';
-import { ProjectContext } from '../../contexts/Project';
+import useProject, { ProjectContext } from '../../contexts/Project';
 import { ITask } from '../../types/typings';
 
 interface ITaskModalProps {
@@ -35,7 +35,7 @@ export default function TaskModal({
   const [taskName, setTaskName] = useState<string>('');
   const [responsible, setResponsible] = useState<string>('');
   const [deadline, setDeadline] = useState<Date>(new Date());
-  const { projectSelected } = useContext(ProjectContext);
+  const { projectSelected } = useProject();
 
   const saveButtonHandler = async () => {
     const requestOptions = {
