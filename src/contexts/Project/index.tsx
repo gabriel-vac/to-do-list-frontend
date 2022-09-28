@@ -43,6 +43,9 @@ function ProjectProvider({ children }: IProjectContextProps) {
 
   const addProject = (project: IProject) => {
     projects.push(project);
+    if (projects.length === 1) {
+      setProjectSelected(project);
+    }
   };
 
   const updateProject = (project: IProject) => {
@@ -61,7 +64,14 @@ function ProjectProvider({ children }: IProjectContextProps) {
     const newArray = projects.filter(item => {
       return item !== project;
     });
-
+    let newSelectedProject = newArray[newArray.length - 1];
+    if (!newSelectedProject) {
+      newSelectedProject = {
+        id: initialValue.projectSelected.id,
+        name: initialValue.projectSelected.name,
+      };
+    }
+    setProjectSelected(newSelectedProject);
     setProjects(newArray);
   };
 

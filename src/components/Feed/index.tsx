@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/outline';
 import toast, { Toaster } from 'react-hot-toast';
 import { CheckboxGroup } from '@chakra-ui/checkbox';
-import { Stack } from '@chakra-ui/react';
+import { Button, Stack, useDisclosure } from '@chakra-ui/react';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { format } from 'date-fns';
 import { ProjectContext } from '../../contexts/Project';
@@ -17,6 +17,7 @@ import { IProject, ITask } from '../../types/typings';
 import CustomCheckBox from '../CustomCheckBox';
 import { useAlert } from '../../hooks/useAlert';
 import { baseURL, headers } from '../../consts';
+import TaskModal from '../TaskModal';
 
 function Feed() {
   const { projectSelected, removeProject, updateProject } =
@@ -27,6 +28,7 @@ function Feed() {
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [userTasks, setUserTasks] = useState<ITask[]>([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const getTasksAPI = useAxios<ITask[]>(
     { method: 'GET' },
     `tasks/${projectSelected?.id}`,
@@ -50,14 +52,15 @@ function Feed() {
     );
     if (response.status === 200) {
       removeProject(projectSelected);
-      toast.success('Projeto deletado!!');
+      toast.success('Project deleted!!');
     }
   };
 
   const handleDeleteProject = () => {
     alert.confirm({
       deleteFunction: deleteProject,
-      title: 'Deseja deletar o projeto?',
+      title: 'Are you sure?',
+      html: `Are you sure to delete "${projectName}" ?`,
     });
   };
 
@@ -227,6 +230,20 @@ function Feed() {
               </div>
             </>
           )}
+          <Button
+            onClick={onOpen}
+            colorScheme="teal"
+            variant="ghost"
+            className="mt-3"
+          >
+            New Task +
+          </Button>
+          <TaskModal
+            isOpen={isOpen}
+            onClose={onClose}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
         </>
       ) : (
         <div className="flex items-center space-x-1 mt-5 p-2 text-xl font-bold bg-white rounded-lg">
