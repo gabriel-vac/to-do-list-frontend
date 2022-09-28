@@ -16,7 +16,7 @@ function Sidebar() {
     { method: 'get' },
     'projects',
     () => {
-      toast.error('Erro ao listar projetos...');
+      toast.error('Error listing projects...');
     },
     true,
   );

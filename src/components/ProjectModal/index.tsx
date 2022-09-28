@@ -38,12 +38,12 @@ export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
       const response = await fetch(`${baseURL}projects`, requestOptions);
       if (response.status === 200 || response.status === 201) {
         const content: IProject = await response.json();
-        toast.success('Projeto cadastrado com sucesso!!');
+        toast.success('Project registered successfully!!');
         addProject(content);
         onClose();
         return;
       }
-      toast.error('Erro ao cadastrar projeto...');
+      toast.error('Error when registering project...');
     } finally {
       setProjectName('');
     }

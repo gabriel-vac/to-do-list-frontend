@@ -32,7 +32,7 @@ function Feed() {
   const getTasksAPI = useAxios<ITask[]>(
     { method: 'GET' },
     `tasks/${projectSelected?.id}`,
-    () => toast.error('Ocorreu um erro'),
+    () => toast.error('Error...'),
     false,
   );
 
@@ -82,12 +82,12 @@ function Feed() {
       requestOptions,
     );
     if (response.status === 200 || response.status === 201) {
-      toast.success('Projeto atualizado com sucesso!!');
+      toast.success('Project successfully updated!!');
       const content: IProject = await response.json();
       updateProject(content);
       return;
     }
-    toast.error('Erro ao atualizar projeto...');
+    toast.error('Error when updating project...');
   };
 
   useEffect(() => {
