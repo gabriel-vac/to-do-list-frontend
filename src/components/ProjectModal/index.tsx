@@ -68,6 +68,7 @@ export default function ProjectModal({ isOpen, onClose }: IProjectModalProps) {
               value={projectName}
               onChange={e => inputChangeHandler(e)}
               placeholder="Project name"
+              maxLength={50}
             />
           </FormControl>
         </ModalBody>

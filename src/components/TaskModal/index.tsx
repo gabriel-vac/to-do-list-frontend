@@ -93,6 +93,7 @@ export default function TaskModal({
               value={taskName}
               onChange={e => inputChangeHandler(e)}
               placeholder="Title"
+              maxLength={50}
             />
           </FormControl>
           <FormControl>
@@ -101,6 +102,7 @@ export default function TaskModal({
               value={responsible}
               onChange={e => responsibleChangeHandler(e)}
               placeholder="Responsible"
+              maxLength={50}
             />
           </FormControl>
           <FormControl>
